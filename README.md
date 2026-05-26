@@ -108,6 +108,7 @@ npx tsx examples/<category>/<file>.ts
 | `31-browser-as-tool.ts` | BrowserAgent composed as a tool |
 | `32-browser-gateway.ts` | Browser agent streamed via Socket.IO |
 | `33-browser-auth.ts` | Browser agent with CredentialVault |
+| `35-browser-advanced.ts` | v2.1.0: indexed actions, batched steps, `pageExtractionLLM`, `useVision: "auto"`, `allowedDomains` |
 
 ### `knowledge/` — RAG & Knowledge Bases
 
