@@ -1,8 +1,7 @@
 /**
- * Agent with Tools — Demonstrates tool calling with colorful logging.
+ * Agent with tools. The model decides when to call them.
  *
- * Usage:
- *   OPENAI_API_KEY=sk-... npx tsx examples/basics/02-agent-with-tools.ts
+ *   OPENAI_API_KEY=sk-... npx tsx basics/02-agent-with-tools.ts
  */
 
 import { Agent, defineTool, openai } from "@agentium/core";

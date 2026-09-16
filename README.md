@@ -1,149 +1,66 @@
-# Agentium Examples
+# Agentium examples
 
-Runnable examples organized by feature area.
+Short, runnable TypeScript. Docs (kid-language, every option): [docs.agentium.in](https://docs.agentium.in).
 
+```bash
+git clone https://github.com/agentiumOS/agentium-examples.git
+cd agentium-examples
+export OPENAI_API_KEY=sk-...
+npx tsx basics/01-basic-agent.ts
 ```
-npx tsx examples/<category>/<file>.ts
-```
 
-## Categories
+## Start here
 
-### `basics/` — Getting Started
+| File | What it shows |
+|------|----------------|
+| `basics/01-basic-agent.ts` | Ask a question. That's it. |
+| `basics/02-agent-with-tools.ts` | Give the agent hands. |
+| `basics/03-remember-a-chat.ts` | Same `sessionId` = it remembers. |
+| `basics/04-watch-events.ts` | Mailbox of "stuff that happened". |
+| `harness/01-deep-agent.ts` | `Agent.deep()` — project files, skills, notes, helpers. |
+| `memory/file-memory.ts` | Tiny MEMORY.md / USER.md sticky notes. |
 
-| File | Description |
-|------|-------------|
-| `01-basic-agent.ts` | Minimal agent with a single prompt |
-| `02-agent-with-tools.ts` | Agent with tool calling (weather + calculator) |
-| `13-multimodal-structured.ts` | Multi-modal input + structured output (Zod) |
-| `14-audio-analysis-gemini.ts` | Audio analysis with Gemini |
-| `22-reasoning.ts` | Extended thinking with Gemini |
-| `24-tool-caching.ts` | Tool result caching with TTL |
+`run()` extras (all optional): `sessionId`, `userId`, `tenantId`, `metadata`, `apiKey`, `signal`, `dependencies`. Full list: [Agents](https://docs.agentium.in/agents/overview).
 
-### `memory/` — Unified Memory & Caching
+## Everything else
 
-| File | Description |
-|------|-------------|
-| `unified-memory.ts` | Full-feature demo: sessions, summaries, facts, profile, entities, decisions, curator |
-| `23-user-memory.ts` | Cross-session personalization with user facts and profile |
-| `25-ask-about-me.ts` | Interactive REPL with recall tools |
-| `browser-with-memory.ts` | BrowserAgent with persistent context |
-| `semantic-cache.ts` | Cache LLM responses by semantic similarity |
-
-### `skills/` — Skills System
+### `basics/`
 
 | File | Description |
 |------|-------------|
-| `basic-skill.ts` | Define and load a Skill (tool bundle + instructions) |
-| `learned-skills.ts` | Save and replay successful multi-step workflows |
+| `01-basic-agent.ts` | Minimal agent |
+| `02-agent-with-tools.ts` | Weather + calculator tools |
+| `03-remember-a-chat.ts` | Multi-turn `sessionId` |
+| `04-watch-events.ts` | `eventBus.onAny` |
+| `13-multimodal-structured.ts` | Image + Zod structured output |
+| `14-audio-analysis-gemini.ts` | Audio with Gemini |
+| `22-reasoning.ts` | Extended thinking |
+| `24-tool-caching.ts` | Tool result TTL cache |
 
-### `handoff/` — Agent Handoff
-
-| File | Description |
-|------|-------------|
-| `agent-handoff.ts` | Transfer conversations to specialist agents mid-conversation |
-
-### `cost/` — Cost Tracking
-
-| File | Description |
-|------|-------------|
-| `cost-tracking.ts` | Track token usage, costs, and enforce budgets |
-
-### `eval/` — Evaluation Framework
+### `harness/`
 
 | File | Description |
 |------|-------------|
-| `eval-suite.ts` | Automated agent quality testing with scorers and reporters |
+| `01-deep-agent.ts` | `Agent.deep()` with `AGENTS.md` + a `SKILL.md` |
 
-### `webhooks/` — Event Destinations
-
-| File | Description |
-|------|-------------|
-| `webhook-destinations.ts` | Push agent events to HTTP, Slack, and custom destinations |
-
-### `telemetry/` — Observability
+### `memory/`
 
 | File | Description |
 |------|-------------|
-| `basic-tracing.ts` | Trace agent runs with ConsoleExporter, metrics, and structured logs |
-| `otel-export.ts` | Export traces to an OpenTelemetry collector (Jaeger, Grafana Tempo) |
-| `langfuse.ts` | Export traces to Langfuse |
+| `file-memory.ts` | Standing MEMORY.md / USER.md |
+| `unified-memory.ts` | Sessions + summaries + facts + entities |
+| `23-user-memory.ts` | Cross-session `userFacts` / `userProfile` |
+| `25-ask-about-me.ts` | Interactive recall |
+| `semantic-cache.ts` | Similar-question cache |
 
-### `teams/` — Multi-Agent Teams
-
-| File | Description |
-|------|-------------|
-| `03-team-coordinate.ts` | Team of agents in Coordinate mode |
-
-### `workflows/` — Sequential Workflows
+### `skills/`
 
 | File | Description |
 |------|-------------|
-| `04-workflow.ts` | Workflow with sequential steps and state |
+| `basic-skill.ts` | `skill.json`-style Skill object |
+| `skill-md.ts` | Progressive `SKILL.md` folders |
+| `learned-skills.ts` | Save and replay workflows |
 
-### `transport/` — HTTP, Socket.IO, A2A
+### Other folders
 
-| File | Description |
-|------|-------------|
-| `05-express-server.ts` | Agent behind Express REST endpoints |
-| `06-socketio-realtime.ts` | Socket.IO real-time streaming with unified memory |
-| `15-express-swagger.ts` | Express + Swagger UI with multi-model agents |
-| `17-a2a-server.ts` | A2A-compliant agent server |
-| `18-a2a-client.ts` | A2A remote agent client (direct, tool, team) |
-
-### `voice/` — Voice Agents
-
-| File | Description |
-|------|-------------|
-| `26-voice-openai.ts` | Voice agent with OpenAI Realtime (mic + speaker) |
-| `26-voice-openai-test.ts` | Voice test: text-in, WAV-out |
-| `27-voice-google.ts` | Voice agent with Google Gemini Live |
-| `27-voice-google-test.ts` | Voice test: Google Gemini Live |
-| `29-voice-socketio.ts` | Voice over Socket.IO with unified memory |
-
-### `browser/` — Browser Automation
-
-| File | Description |
-|------|-------------|
-| `30-browser-agent.ts` | Vision + DOM hybrid with stealth & video |
-| `31-browser-as-tool.ts` | BrowserAgent composed as a tool |
-| `32-browser-gateway.ts` | Browser agent streamed via Socket.IO |
-| `33-browser-auth.ts` | Browser agent with CredentialVault |
-| `35-browser-advanced.ts` | v2.1.0: indexed actions, batched steps, `pageExtractionLLM`, `useVision: "auto"`, `allowedDomains` |
-
-### `knowledge/` — RAG & Knowledge Bases
-
-| File | Description |
-|------|-------------|
-| `10-rag-agent.ts` | RAG agent with InMemory KnowledgeBase |
-| `11-rag-qdrant.ts` | RAG agent with Qdrant |
-| `12-rag-mongodb.ts` | RAG agent with MongoDB Atlas |
-| `28-hybrid-search.ts` | Hybrid search (vector + BM25 + RRF) |
-
-### `toolkits/` — External Toolkits
-
-| File | Description |
-|------|-------------|
-| `16-mcp-tools.ts` | MCP tool provider (GitHub) |
-| `19-hackernews-toolkit.ts` | HackerNews toolkit |
-| `20-gmail-toolkit.ts` | Gmail toolkit |
-| `21-whatsapp-toolkit.ts` | WhatsApp toolkit |
-
-### `storage/` — Storage & Vector Stores
-
-| File | Description |
-|------|-------------|
-| `08-storage-drivers.ts` | KV storage (InMemory, SQLite, Postgres, MongoDB) |
-| `09-vector-stores.ts` | Vector similarity search across backends |
-
-### `safety/` — Safety & Approvals
-
-| File | Description |
-|------|-------------|
-| `34-sandbox-tools.ts` | Sandboxed tool execution (timeout, memory limits) |
-| `35-human-in-the-loop.ts` | Human-in-the-loop approval for sensitive tools |
-
-### `queue/` — Background Jobs
-
-| File | Description |
-|------|-------------|
-| `07-background-job.ts` | Agent jobs via BullMQ queue/worker |
+`teams/`, `workflows/`, `transport/`, `voice/`, `browser/`, `knowledge/`, `toolkits/`, `storage/`, `safety/`, `queue/`, `telemetry/`, `cost/`, `eval/`, `handoff/`, `scheduling/`, `compliance/`, `capacity/`, `multi-tenant/`, `rate-limiting/`, `webhooks/`.
