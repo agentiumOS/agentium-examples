@@ -1,84 +1,76 @@
 /**
  * Scheduled Agent with Cron
  *
- * Demonstrates scheduling an agent to run on a cron schedule
- * and triggering agent runs based on events.
+ * Recurring runs are repeatable queue jobs: the producer registers a cron
+ * pattern, a worker picks the runs up. The schedule lives in Redis, so
+ * restarting either process does not lose it.
+ *
+ * Requires a Redis instance on localhost:6379.
  *
  * Usage: npx tsx examples/scheduling/cron-agent.ts
  */
-import { Agent, AgentScheduler, EventBus, openai } from "@agentium/core";
+import { Agent, openai } from "@agentium/core";
+import { AgentQueue, AgentWorker } from "@agentium/queue";
 
-async function main() {
-  const eventBus = new EventBus();
+const reportAgent = new Agent({
+  name: "report-agent",
+  model: openai("gpt-4o-mini"),
+  instructions: "You generate concise status reports.",
+});
 
-  eventBus.on("schedule.fired", ({ scheduleId, agentName }) => {
-    console.log(`⏰ Schedule fired: ${scheduleId} (${agentName})`);
-  });
+const connection = { host: "localhost", port: 6379 };
 
-  eventBus.on("schedule.completed", ({ scheduleId, runCount }) => {
-    console.log(`✅ Schedule completed: ${scheduleId} (run #${runCount})`);
-  });
+// --- Producer side: register the schedules ---
 
-  eventBus.on("trigger.fired", ({ triggerId, event }) => {
-    console.log(`🎯 Trigger fired: ${triggerId} on "${event}"`);
-  });
+const queue = new AgentQueue({ connection, queueName: "scheduled-runs" });
 
-  const agent = new Agent({
+await queue.schedule({
+  id: "status-check",
+  cron: "*/5 * * * *",
+  agent: { name: "report-agent", input: "Generate a brief system status check." },
+});
+
+await queue.schedule({
+  id: "daily-report",
+  cron: "0 9 * * *",
+  timezone: "Asia/Kolkata",
+  agent: {
     name: "report-agent",
-    model: openai("gpt-4o-mini"),
-    instructions: "You generate concise status reports.",
-    eventBus,
-  });
+    input: "Generate the daily report.",
+    // Same sessionId on every run, so the agent sees yesterday's report
+    // in its history and can write "unchanged since yesterday".
+    sessionId: "daily-report",
+  },
+});
 
-  const scheduler = new AgentScheduler(eventBus);
-
-  // Schedule: every 5 minutes
-  const scheduleId = scheduler.schedule(agent, {
-    cron: "*/5 * * * *",
-    input: "Generate a brief system status check.",
-    maxRetries: 1,
-  });
-
-  // Schedule with context continuity
-  scheduler.schedule(agent, {
-    id: "daily-report",
-    cron: "0 9 * * *",
-    input: (lastResult) =>
-      lastResult
-        ? `Previous report summary: ${lastResult.text.slice(0, 200)}. Generate an updated report.`
-        : "Generate the first daily report.",
-    contextContinuity: true,
-  });
-
-  // Event trigger: run agent when errors occur
-  scheduler.trigger(agent, {
-    event: "run.error",
-    input: (eventData) =>
-      `An error occurred: ${eventData.error?.message}. Analyze the error and suggest fixes.`,
-    debounceMs: 60_000,
-  });
-
-  // List schedules
-  const { schedules, triggers } = scheduler.list();
-  console.log("\nActive schedules:");
-  for (const s of schedules) {
-    console.log(`  ${s.id}: ${s.cron} (enabled: ${s.enabled})`);
-  }
-  console.log("\nActive triggers:");
-  for (const t of triggers) {
-    console.log(`  ${t.id}: on "${t.event}" (enabled: ${t.enabled})`);
-  }
-
-  // Pause and resume
-  scheduler.pause(scheduleId);
-  console.log(`\nPaused schedule ${scheduleId}`);
-
-  scheduler.resume(scheduleId);
-  console.log(`Resumed schedule ${scheduleId}`);
-
-  // Clean up (in real app, let it run)
-  scheduler.cancelAll();
-  console.log("\nAll schedules cancelled.");
+console.log("Active schedules:");
+for (const s of await queue.listSchedules()) {
+  console.log(`  ${s.id}: ${s.pattern} (next: ${s.next.toISOString()})`);
 }
 
-main().catch(console.error);
+queue.onCompleted((id, result) => {
+  console.log(`Job ${id} completed: ${result.text.slice(0, 120)}...`);
+});
+
+queue.onFailed((id, error) => {
+  console.error(`Job ${id} failed:`, error.message);
+});
+
+// --- Worker side: this is what actually runs the agent ---
+
+const worker = new AgentWorker({
+  connection,
+  queueName: "scheduled-runs",
+  agentRegistry: { "report-agent": reportAgent },
+});
+
+worker.start();
+console.log("Worker started. Waiting for the next cron tick...");
+
+process.on("SIGINT", async () => {
+  await queue.unschedule("status-check");
+  await queue.unschedule("daily-report");
+  await worker.stop();
+  await queue.close();
+  process.exit(0);
+});

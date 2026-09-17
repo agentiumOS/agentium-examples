@@ -10,7 +10,8 @@
  *   npx tsx examples/safety/sandbox-paths-ssrf.ts
  */
 
-import { Agent, openai, PathSecurityError, safeJoin, ScraperToolkit } from "@agentium/core";
+import { Agent, openai, PathSecurityError, safeJoin } from "@agentium/core";
+import { ScraperToolkit } from "@agentium/core/toolkits";
 
 // ── 1. safeJoin ───────────────────────────────────────────────────────────
 console.log("--- safeJoin ---");

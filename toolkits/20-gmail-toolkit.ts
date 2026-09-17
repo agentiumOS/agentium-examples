@@ -16,7 +16,8 @@
  * Usage:
  *   npx tsx examples/toolkits/20-gmail-toolkit.ts
  */
-import { Agent, openai, GmailToolkit } from "@agentium/core";
+import { Agent, openai } from "@agentium/core";
+import { GmailToolkit } from "@agentium/core/toolkits";
 
 async function main() {
   console.log("╔════════════════════════════════════════╗");

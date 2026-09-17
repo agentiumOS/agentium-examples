@@ -51,7 +51,8 @@
  *   npx tsx examples/toolkits/google-workspace.ts
  *
  */
-import { Agent, openai, GoogleWorkspaceToolkit } from "@agentium/core";
+import { Agent, openai } from "@agentium/core";
+import { GoogleWorkspaceToolkit } from "@agentium/core/toolkits";
 import { execSync } from "node:child_process";
 
 function checkGwsInstalled(): boolean {

@@ -7,7 +7,7 @@
  * - ColbertReranker    (local cross-encoder)     — needs `@xenova/transformers`, no API key
  *
  * Each one implements the same `Reranker` interface so they're interchangeable
- * in `VectorStore.search({ rerank })` or `SemanticToolSelector`.
+ * in `VectorStore.search({ rerank })`.
  *
  * Run:
  *   npx tsx examples/knowledge/31-rerank-providers.ts

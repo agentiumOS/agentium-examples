@@ -16,7 +16,8 @@
  * Usage:
  *   npx tsx examples/toolkits/21-whatsapp-toolkit.ts
  */
-import { Agent, openai, WhatsAppToolkit } from "@agentium/core";
+import { Agent, openai } from "@agentium/core";
+import { WhatsAppToolkit } from "@agentium/core/toolkits";
 
 async function main() {
   console.log("╔════════════════════════════════════════╗");

@@ -59,8 +59,7 @@ npx tsx basics/01-basic-agent.ts
 |------|-------------|
 | `basic-skill.ts` | `skill.json`-style Skill object |
 | `skill-md.ts` | Progressive `SKILL.md` folders |
-| `learned-skills.ts` | Save and replay workflows |
 
 ### Other folders
 
-`teams/`, `workflows/`, `transport/`, `voice/`, `browser/`, `knowledge/`, `toolkits/`, `storage/`, `safety/`, `queue/`, `telemetry/`, `cost/`, `eval/`, `handoff/`, `scheduling/`, `compliance/`, `capacity/`, `multi-tenant/`, `rate-limiting/`, `webhooks/`.
+`teams/`, `workflows/`, `transport/`, `voice/`, `browser/`, `knowledge/`, `toolkits/`, `storage/`, `safety/`, `queue/`, `telemetry/`, `cost/`, `eval/`, `handoff/`, `scheduling/`, `multi-tenant/`, `rate-limiting/`, `webhooks/`.

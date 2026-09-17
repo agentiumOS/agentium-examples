@@ -9,7 +9,8 @@
  * Usage:
  *   npx tsx examples/toolkits/19-hackernews-toolkit.ts
  */
-import { Agent, openai, HackerNewsToolkit } from "@agentium/core";
+import { Agent, openai } from "@agentium/core";
+import { HackerNewsToolkit } from "@agentium/core/toolkits";
 
 async function main() {
   console.log("╔════════════════════════════════════════╗");

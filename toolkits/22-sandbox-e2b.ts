@@ -12,7 +12,8 @@
  * Daytona is identical - swap E2BSandboxToolkit for DaytonaSandboxToolkit.
  */
 
-import { Agent, E2BSandboxToolkit, openai } from "@agentium/core";
+import { Agent, openai } from "@agentium/core";
+import { E2BSandboxToolkit } from "@agentium/core/toolkits";
 
 const sandbox = new E2BSandboxToolkit({ template: "base", defaultTimeoutSeconds: 30 });
 
