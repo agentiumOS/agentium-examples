@@ -19,6 +19,7 @@ npx tsx basics/01-basic-agent.ts
 | `basics/04-watch-events.ts` | Mailbox of "stuff that happened". |
 | `harness/01-deep-agent.ts` | `Agent.deep()` — project files, skills, notes, helpers. |
 | `memory/file-memory.ts` | Tiny MEMORY.md / USER.md sticky notes. |
+| `models/jev-triage.ts` | Jev (TypeSafe) — ticket category / urgent / severity. Needs `TYPESAFE_API_KEY`. |
 
 `run()` extras (all optional): `sessionId`, `userId`, `tenantId`, `metadata`, `apiKey`, `signal`, `dependencies`. Full list: [Agents](https://docs.agentium.in/agents/overview).
 
