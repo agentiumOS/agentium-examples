@@ -38,7 +38,7 @@ const weatherTool = defineTool({
 
 const agent = new VoiceAgent({
   name: "VoiceAssistant",
-  provider: openaiRealtime("gpt-4o-realtime-preview"),
+  provider: openaiRealtime("gpt-realtime-2.1"),
   instructions:
     "You are a friendly voice assistant. Keep responses concise. You can check the weather using tools.",
   tools: [weatherTool],
