@@ -35,7 +35,7 @@ npx tsx basics/01-basic-agent.ts
 | `04-watch-events.ts` | `eventBus.onAny` |
 | `13-multimodal-structured.ts` | Image + Zod structured output |
 | `14-audio-analysis-gemini.ts` | Audio with Gemini |
-| `22-reasoning.ts` | Extended thinking |
+| `22-reasoning.ts` | Extended thinking and provider options |
 | `24-tool-caching.ts` | Tool result TTL cache |
 
 ### `harness/`
